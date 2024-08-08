@@ -1,5 +1,11 @@
 package io
 
+import (
+	"os"
+
+	"gopkg.in/yaml.v2"
+)
+
 type YamlFile struct {
 	Window           Window        `yaml:"window"`
 	Scrolling        Scrolling     `yaml:"scrolling"`
@@ -135,4 +141,14 @@ type Debug struct {
 type Shell struct {
 	Program string   `yaml:"program"`
 	Args    []string `yaml:"args"`
+}
+
+func ChargeConfigFile(path string) (YamlFile, error) {
+	var config YamlFile
+	file, err := os.ReadFile(path)
+	if err != nil {
+		return YamlFile{}, nil
+	}
+	err = yaml.Unmarshal(file, &config)
+	return config, nil
 }
